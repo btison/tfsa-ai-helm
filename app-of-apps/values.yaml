@@ -1,0 +1,57 @@
+global:
+  kafka:
+    name: &kafka kafka
+    namespace: &kafkanamespace kafka
+    kafka-cluster: &kafkacluster
+      bootstrapServer: kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
+      securityProtocol: SASL_PLAINTEXT
+      saslMechanism: SCRAM-SHA-512
+      clientId: globex
+      clientSecret: globex
+
+tfsacalculation:
+  enabled: true
+  applicationName: tfsa-calculation-agent
+  applicationNamespace: openshift-gitops
+  destinationNamespace: tfsa
+  source:
+    repoUrl: https://github.com/btison/tfsa-ai-helm.git
+    targetRevision: main
+    path: tfsa-calculation-agent
+    helm:
+      values:
+        route:
+          host: 
+        llm:
+          tfsaCalculation:
+            modelName: 
+            apiKey: 
+            baseUrl: 
+        subdomain:
+  argocd:
+    enabled: true
+    syncwave: "1"
+    
+
+tfsatransaction:
+  enabled: true
+  applicationName: tfsa-transaction-agent
+  applicationNamespace: openshift-gitops
+  destinationNamespace: tfsa
+  source:
+    repoUrl: https://github.com/btison/tfsa-ai-helm.git
+    targetRevision: main
+    path: tfsa-transaction-agent
+    helm:
+      values:
+        route:
+          host: 
+        llm:
+          tfsaTransaction:
+            modelName: 
+            apiKey: 
+            baseUrl: 
+        subdomain: 
+  argocd:
+    enabled: true
+    syncwave: "1"
